@@ -1,0 +1,8 @@
+C:\#c & .NET\A26 Ex02 OriHendler 211676119 MayBelo 322758954\A26 Ex02 OriHendler 211676119 MayBelo 322758954\obj\Debug\A26 Ex02 OriHendler 211676119 MayBelo 322758954.csproj.AssemblyReference.cache
+C:\#c & .NET\A26 Ex02 OriHendler 211676119 MayBelo 322758954\A26 Ex02 OriHendler 211676119 MayBelo 322758954\obj\Debug\A26 Ex02 OriHendler 211676119 MayBelo 322758954.csproj.CoreCompileInputs.cache
+C:\#c & .NET\A26 Ex02 OriHendler 211676119 MayBelo 322758954\A26 Ex02 OriHendler 211676119 MayBelo 322758954\bin\Debug\A26 Ex02 OriHendler 211676119 MayBelo 322758954.exe.config
+C:\#c & .NET\A26 Ex02 OriHendler 211676119 MayBelo 322758954\A26 Ex02 OriHendler 211676119 MayBelo 322758954\bin\Debug\A26 Ex02 OriHendler 211676119 MayBelo 322758954.exe
+C:\#c & .NET\A26 Ex02 OriHendler 211676119 MayBelo 322758954\A26 Ex02 OriHendler 211676119 MayBelo 322758954\bin\Debug\A26 Ex02 OriHendler 211676119 MayBelo 322758954.pdb
+C:\#c & .NET\A26 Ex02 OriHendler 211676119 MayBelo 322758954\A26 Ex02 OriHendler 211676119 MayBelo 322758954\obj\Debug\A26 Ex02 OriHendler 211676119 MayBelo 322758954.exe
+C:\#c & .NET\A26 Ex02 OriHendler 211676119 MayBelo 322758954\A26 Ex02 OriHendler 211676119 MayBelo 322758954\obj\Debug\A26 Ex02 OriHendler 211676119 MayBelo 322758954.pdb
+C:\#c & .NET\A26 Ex02 OriHendler 211676119 MayBelo 322758954\A26 Ex02 OriHendler 211676119 MayBelo 322758954\obj\Debug\A26 Ex02 OriHendler 211676119 MayBelo 322758954.exe.config
