@@ -7,13 +7,42 @@ namespace A26_Ex02_OriHendler_211676119_MayBelo_322758954
         public enum columnLetters
         {
             A = 0,
-            B,
-            C,
-            D,
-            E,
-            F,
-            G,
-            H
+            B,C,D,E,F,G,H
+        }
+        public static void StartNewGame()
+        {
+            Player player1 = new Player(1, 0);
+            Player player2 = new Player(2, 0);
+            Console.WriteLine("Welcom to 4 in a Row Game!\nPlease enter number of Rows (number must be between 4 and 8)");
+            string numOfRows = System.Console.ReadLine();
+            while (UserInterface.CheckRowAndColumnNum(numOfRows) == false)
+            {
+                Console.WriteLine("Please enter number of Rows (number must be between 4 and 8)");
+                numOfRows = System.Console.ReadLine();
+            }
+            Console.WriteLine("Please enter number of columns (number must be between 4 and 8)");
+            string numOfColumns = System.Console.ReadLine();
+            while (UserInterface.CheckRowAndColumnNum(numOfColumns) == false)
+            {
+                Console.WriteLine("Please enter number of columns (number must be between 4 and 8)");
+                numOfColumns = System.Console.ReadLine();
+            }
+            Console.WriteLine("Please enter number of players (1 or 2)");
+            int numOfPlayers = int.Parse(System.Console.ReadLine());
+            while (UserInterface.CheckPlayersNumber(numOfPlayers) == false)
+            {
+                Console.WriteLine("Please enter number of players (1 or 2)");
+                numOfPlayers = int.Parse(System.Console.ReadLine());
+            }
+            string [,] gameBoard = UserInterface.CreateNewGameBoard(numOfRows, numOfColumns);
+            if (numOfPlayers == 1)
+            {
+                GameLogic.OnePlayerGame(ref gameBoard, numOfColumns, numOfPlayers, ref player1, ref player2);
+            }
+            else 
+            {
+                GameLogic.TwoPlayersGame(ref gameBoard, numOfColumns, numOfPlayers, ref player1, ref player2);
+            }
         }
         private static bool CheckRowAndColumnNum(string i_num)
         {
@@ -41,41 +70,6 @@ namespace A26_Ex02_OriHendler_211676119_MayBelo_322758954
             string[,] gameBoard = new string[rowsInt, columnsInt];
             UserInterface.PrintGameBoard(ref gameBoard);
             return gameBoard;
-        }
-        public static void StartNewGame()
-        {
-            Player player1 = new Player(0);
-            Player player2 = new Player(0);
-            Console.WriteLine("Welcom to 4 in a Row Game!\nPlease enter number of Rows (number must be between 4 and 8)");
-            string numOfRows = System.Console.ReadLine();
-            while (UserInterface.CheckRowAndColumnNum(numOfRows) == false)
-            {
-                Console.WriteLine("Please enter number of Rows (number must be between 4 and 8)");
-                numOfRows = System.Console.ReadLine();
-            }
-            Console.WriteLine("Please enter number of columns (number must be between 4 and 8)");
-            string numOfColumns = System.Console.ReadLine();
-            while (UserInterface.CheckRowAndColumnNum(numOfColumns) == false)
-            {
-                Console.WriteLine("Please enter number of columns (number must be between 4 and 8)");
-                numOfColumns = System.Console.ReadLine();
-            }
-            Console.WriteLine("Please enter number of players (1 or 2)");
-            int numOfPlayers = int.Parse(System.Console.ReadLine());
-            while (UserInterface.CheckPlayersNumber(numOfPlayers) == false)
-            {
-                Console.WriteLine("Please enter number of players (1 or 2)");
-                numOfPlayers = int.Parse(System.Console.ReadLine());
-            }
-            string [,] gameBoard = UserInterface.CreateNewGameBoard(numOfRows, numOfColumns);
-            if (numOfPlayers == 1)
-            {
-                GameLogic.OnePlayerGame(ref gameBoard, numOfColumns, numOfPlayers);
-            }
-            else 
-            {
-                GameLogic.TwoPlayersGame(ref gameBoard, numOfColumns, numOfPlayers);
-            }
         }
         public static void PrintGameBoard(ref string[,] io_GameBoard)
         {
@@ -106,7 +100,7 @@ namespace A26_Ex02_OriHendler_211676119_MayBelo_322758954
                 Console.WriteLine("=");
             }
         }
-        public static columnLetters GetColumnFromPlayer(int i_numOfColumns)
+        public static columnLetters GetColumnFromPlayer(ref string[,] io_gameBoard, int i_numOfColumns, int winnerPlayerNum ,ref Player io_player1, ref Player io_player2, int i_numOfPlayers)
         {
             //get letter from user
             Console.WriteLine("Please enter the letter of the column:");
@@ -114,8 +108,8 @@ namespace A26_Ex02_OriHendler_211676119_MayBelo_322758954
             //check letter
             bool v_colLetterValid = char.TryParse(colLetter, out char o_resultChar);
             if (o_resultChar == 'Q')
-            { 
-                
+            {
+                UserInterface.EndGameMessage(ref io_gameBoard, winnerPlayerNum, ref io_player1, ref io_player2, i_numOfPlayers);
             }
             while (!v_colLetterValid || ((o_resultChar - 'A') >= i_numOfColumns))
             { 
@@ -126,6 +120,43 @@ namespace A26_Ex02_OriHendler_211676119_MayBelo_322758954
             UserInterface.columnLetters Letter = (columnLetters)(o_resultChar - 'A');
             return Letter;
         }
-    
+        public static void EndGameMessage(ref string[,] io_gameBoard, int i_winnerPlayerNum, ref Player io_player1, ref Player io_player2, int i_numOfPlayers)
+        {
+            string playersAnswer = "";
+            int pointsPlayer1 = Player.GetPlayerPoints(io_player1);
+            int pointsPlayer2 = Player.GetPlayerPoints(io_player2);
+            if (pointsPlayer1 == pointsPlayer2)
+            {
+                Console.WriteLine("It's a tie! \nDo you want another round? (please answer YES or NO)");
+                playersAnswer = Console.ReadLine().ToUpper();
+            }
+            if (i_winnerPlayerNum == 1)
+            {
+                Player.WinPlayer(io_player1);
+                string message = string.Format("The winner is player number {0} and the score is {1}-{2}\nDo you want another round? (please answer YES or NO)", i_winnerPlayerNum, pointsPlayer1, pointsPlayer2);
+                playersAnswer = Console.ReadLine().ToUpper();
+            }
+            else
+            {
+                Player.WinPlayer(io_player2);
+                string message = string.Format("The winner is player number {0} and the score is {1}-{2}\nDo you want another round? (please answer YES or NO)", i_winnerPlayerNum, pointsPlayer2, pointsPlayer1);
+                playersAnswer = Console.ReadLine().ToUpper();
+            }
+
+            while (playersAnswer != "YES" && playersAnswer != "NO")
+            {
+                Console.WriteLine("You enterd invalid answer, do you want another round? (please answer YES or NO)");
+                Console.ReadLine().ToUpper();
+            }
+            if (playersAnswer == "YES")
+            {
+                Console.WriteLine("YAY lest's play");
+                GameLogic.nextRound(ref io_gameBoard, i_numOfPlayers, ref io_player1, ref io_player2);
+            }
+            if (playersAnswer == "NO")
+            {
+                Console.WriteLine("BYE :)");
+            }
+        }
     }
 }
