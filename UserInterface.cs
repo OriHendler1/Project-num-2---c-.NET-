@@ -35,13 +35,15 @@ namespace A26_Ex02_OriHendler_211676119_MayBelo_322758954
                 numOfPlayers = int.Parse(System.Console.ReadLine());
             }
             string [,] gameBoard = UserInterface.CreateNewGameBoard(numOfRows, numOfColumns);
+            int chosenRow = 0;
+            int chosenColumn = 0;
             if (numOfPlayers == 1)
             {
-                GameLogic.OnePlayerGame(ref gameBoard, numOfColumns, numOfPlayers, ref player1, ref player2);
+                GameLogic.OnePlayerGame(ref gameBoard, numOfColumns, numOfPlayers, ref player1, ref player2,ref chosenRow, ref chosenColumn);
             }
             else 
             {
-                GameLogic.TwoPlayersGame(ref gameBoard, numOfColumns, numOfPlayers, ref player1, ref player2);
+                GameLogic.TwoPlayersGame(ref gameBoard, numOfColumns, numOfPlayers, ref player1, ref player2, ref chosenRow, ref chosenColumn);
             }
         }
         private static bool CheckRowAndColumnNum(string i_num)
@@ -63,10 +65,10 @@ namespace A26_Ex02_OriHendler_211676119_MayBelo_322758954
             }
             return !v_isValid;
         }
-        public static string[,] CreateNewGameBoard(string rows, string columns)
+        public static string[,] CreateNewGameBoard(string i_rows, string i_columns)
         {
-            int rowsInt = int.Parse(rows);
-            int columnsInt = int.Parse(columns);
+            int rowsInt = int.Parse(i_rows);
+            int columnsInt = int.Parse(i_columns);
             string[,] gameBoard = new string[rowsInt, columnsInt];
             UserInterface.PrintGameBoard(ref gameBoard);
             return gameBoard;
@@ -100,7 +102,7 @@ namespace A26_Ex02_OriHendler_211676119_MayBelo_322758954
                 Console.WriteLine("=");
             }
         }
-        public static columnLetters GetColumnFromPlayer(ref string[,] io_gameBoard, int i_numOfColumns, int winnerPlayerNum ,ref Player io_player1, ref Player io_player2, int i_numOfPlayers)
+        public static columnLetters GetColumnFromPlayer(ref string[,] io_gameBoard, int i_numOfColumns, int i_winnerPlayerNum ,ref Player io_player1, ref Player io_player2, int i_numOfPlayers, ref int io_chosenRow, ref int io_chosenCol)
         {
             //get letter from user
             Console.WriteLine("Please enter the letter of the column:");
@@ -109,7 +111,7 @@ namespace A26_Ex02_OriHendler_211676119_MayBelo_322758954
             bool v_colLetterValid = char.TryParse(colLetter, out char o_resultChar);
             if (o_resultChar == 'Q')
             {
-                UserInterface.EndGameMessage(ref io_gameBoard, winnerPlayerNum, ref io_player1, ref io_player2, i_numOfPlayers);
+                UserInterface.EndGameMessage(ref io_gameBoard, i_winnerPlayerNum, ref io_player1, ref io_player2, i_numOfPlayers, ref io_chosenRow, ref io_chosenCol);
             }
             while (!v_colLetterValid || ((o_resultChar - 'A') >= i_numOfColumns))
             { 
@@ -120,38 +122,45 @@ namespace A26_Ex02_OriHendler_211676119_MayBelo_322758954
             UserInterface.columnLetters Letter = (columnLetters)(o_resultChar - 'A');
             return Letter;
         }
-        public static void EndGameMessage(ref string[,] io_gameBoard, int i_winnerPlayerNum, ref Player io_player1, ref Player io_player2, int i_numOfPlayers)
+        public static void EndGameMessage(ref string[,] io_gameBoard, int i_winnerPlayerNum, ref Player io_player1, ref Player io_player2, int i_numOfPlayers, ref int io_chosenRow, ref int io_chosenCol)
         {
-            string playersAnswer = "";
-            int pointsPlayer1 = Player.GetPlayerPoints(io_player1);
-            int pointsPlayer2 = Player.GetPlayerPoints(io_player2);
-            if (pointsPlayer1 == pointsPlayer2)
-            {
-                Console.WriteLine("It's a tie! \nDo you want another round? (please answer YES or NO)");
-                playersAnswer = Console.ReadLine().ToUpper();
-            }
             if (i_winnerPlayerNum == 1)
             {
                 Player.WinPlayer(io_player1);
-                string message = string.Format("The winner is player number {0} and the score is {1}-{2}\nDo you want another round? (please answer YES or NO)", i_winnerPlayerNum, pointsPlayer1, pointsPlayer2);
-                playersAnswer = Console.ReadLine().ToUpper();
             }
             else
-            {
+            { 
                 Player.WinPlayer(io_player2);
-                string message = string.Format("The winner is player number {0} and the score is {1}-{2}\nDo you want another round? (please answer YES or NO)", i_winnerPlayerNum, pointsPlayer2, pointsPlayer1);
+            }
+            string playersAnswer = "";
+            int pointsPlayer1 = Player.GetPlayerPoints(io_player1);
+            int pointsPlayer2 = Player.GetPlayerPoints(io_player2);
+            string message =("The winner is player number {0} and the score is {1}-{2}\nDo you want another round? (please answer YES or NO)");
+            if (pointsPlayer1 == pointsPlayer2)
+            {
+                Console.WriteLine("It's a tie! the score is {0}-{1}\nDo you want another round? (please answer YES or NO)", pointsPlayer1, pointsPlayer2);
+                playersAnswer = Console.ReadLine().ToUpper();
+            }
+            else if (i_winnerPlayerNum == 1)
+            {
+                Console.WriteLine(message, i_winnerPlayerNum, pointsPlayer1, pointsPlayer2);
+                playersAnswer = Console.ReadLine().ToUpper();
+            }
+            else if (i_winnerPlayerNum == 2)
+            {
+                Console.WriteLine(message, i_winnerPlayerNum, pointsPlayer2, pointsPlayer1);
                 playersAnswer = Console.ReadLine().ToUpper();
             }
 
             while (playersAnswer != "YES" && playersAnswer != "NO")
             {
                 Console.WriteLine("You enterd invalid answer, do you want another round? (please answer YES or NO)");
-                Console.ReadLine().ToUpper();
+                playersAnswer = Console.ReadLine().ToUpper();
             }
             if (playersAnswer == "YES")
             {
                 Console.WriteLine("YAY lest's play");
-                GameLogic.nextRound(ref io_gameBoard, i_numOfPlayers, ref io_player1, ref io_player2);
+                GameLogic.nextRound(ref io_gameBoard, i_numOfPlayers, ref io_player1, ref io_player2, ref io_chosenRow, ref io_chosenCol);
             }
             if (playersAnswer == "NO")
             {
