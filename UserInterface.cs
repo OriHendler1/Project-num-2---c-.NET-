@@ -17,21 +17,21 @@ namespace A26_Ex02_OriHendler_211676119_MayBelo_322758954
             string numOfRows = System.Console.ReadLine();
             while (UserInterface.CheckRowAndColumnNum(numOfRows) == false)
             {
-                Console.WriteLine("Please enter number of Rows (number must be between 4 and 8)");
+                Console.WriteLine("Number is Invalid. \nPlease enter number of Rows (number must be between 4 and 8)");
                 numOfRows = System.Console.ReadLine();
             }
             Console.WriteLine("Please enter number of columns (number must be between 4 and 8)");
             string numOfColumns = System.Console.ReadLine();
             while (UserInterface.CheckRowAndColumnNum(numOfColumns) == false)
             {
-                Console.WriteLine("Please enter number of columns (number must be between 4 and 8)");
+                Console.WriteLine("Number is Invalid. \nPlease enter number of columns (number must be between 4 and 8)");
                 numOfColumns = System.Console.ReadLine();
             }
             Console.WriteLine("Please enter number of players (1 or 2)");
             int numOfPlayers = int.Parse(System.Console.ReadLine());
             while (UserInterface.CheckPlayersNumber(numOfPlayers) == false)
             {
-                Console.WriteLine("Please enter number of players (1 or 2)");
+                Console.WriteLine("Number is Invalid. \nPlease enter number of players (1 or 2)");
                 numOfPlayers = int.Parse(System.Console.ReadLine());
             }
             string [,] gameBoard = UserInterface.CreateNewGameBoard(numOfRows, numOfColumns);
